@@ -3,6 +3,13 @@
     "description": "This package will be allow developers or managers to monitoring everything happen in them application",
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "abdullahdheir",
+            "role": "owner",
+            "homepage": "https://github.com/abdullahdheir"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Awful\\Monitoring\\": "src/"
@@ -10,7 +17,8 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.0",
+        "laravel/framework": "=>10.0"
     },
     "extra": {
         "laravel": {
