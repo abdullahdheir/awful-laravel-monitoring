@@ -1,8 +1,7 @@
 <?php
 
+use Awful\Monitoring\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/awful', function () {
-    return "TEST";
-});
+Route::get('/', [HomeController::class,'index'])->name('index');
