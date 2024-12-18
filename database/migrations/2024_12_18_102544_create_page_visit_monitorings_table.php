@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('page_visit_monitoring', function (Blueprint $table) {
             $table->id();
+            $table->string('domain')->nullable();
             $table->nullableMorphs('causer','causer');
             $table->string('link');
             $table->string('method')->default('GET');

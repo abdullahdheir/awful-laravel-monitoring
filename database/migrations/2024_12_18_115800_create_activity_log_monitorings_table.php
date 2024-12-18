@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('activity_log_monitoring', function (Blueprint $table) {
             $table->id();
+            $table->string('domain')->nullable();
             $table->longText('description')->nullable();
             $table->nullableMorphs('causer','causer');
             $table->nullableMorphs('subject','subject');
-            $table->enum('event_name',['created','updated','deleted','restored','forceDeleted']);
+            $table->enum('event_name', ['created', 'updated', 'deleted', 'restored', 'forceDeleted', 'login', 'logout']);
             $table->string('link')->nullable();
             $table->string('method')->nullable();
             $table->ipAddress();

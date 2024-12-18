@@ -18,7 +18,6 @@ class MonitoringServiceProvider extends ServiceProvider
         $this->app->register(MonitoringEventServiceProvider::class);
         $this->app['router']->aliasMiddleware('page-monitor-visit-middleware', PageVisitMonitoringMiddleware::class);
         $this->app['router']->pushMiddlewareToGroup(config('auth.defaults.guard'), PageVisitMonitoringMiddleware::class);
-
     }
 
     /**

@@ -2,9 +2,8 @@
 
 namespace Awful\Monitoring\Observers;
 
+use Awful\Monitoring\Jobs\ActivityLogMonitoringJob;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class MonitoringObserver
 {
@@ -72,63 +71,7 @@ class MonitoringObserver
      */
     protected function logActivity(Model $model, string $eventName): void
     {
-        DB::table('activity_log_monitoring')->insert([
-            'description' => $this->generateDescription($eventName, $model->getOriginal(), $model->getDirty()),
-            'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null,
-            'causer_id' => auth()->id(),
-            'subject_type' => get_class($model),
-            'subject_id' => $model->getKey(),
-            'event_name' => $eventName,
-            'link' => request()->fullUrl(),
-            'method' => request()->method(),
-            'ip_address' => request()->ip(),
-            'user-agent' => json_encode(request()->header('User-Agent')),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    }
-
-    protected function generateDescription(string $eventName, array $oldData, array $newData): string
-    {
-        $description = 'Performed ' . $eventName . ' operation.';
-
-        if ($eventName === 'created') {
-            // تفاصيل السجل المُنشأ
-            $description .= ' Created record with the following values: ' . json_encode($newData);
-        } elseif ($eventName === 'updated') {
-            // تفاصيل الحقول المُعدلة
-            $changes = $this->getChangedFields($oldData, $newData);
-            $description .= ' Updated the following fields: ' . json_encode($changes);
-        } elseif ($eventName === 'deleted') {
-            // تفاصيل السجل المحذوف
-            $description .= ' Deleted record with the following values: ' . json_encode($oldData);
-        }
-
-        return $description;
-    }
-
-    protected function getChangedFields(array $oldData, array $newData): array
-    {
-        $changedFields = [];
-        $newFields = [];
-
-        foreach ($newData as $key => $value) {
-            if (Arr::get($oldData, $key) !== $value) {
-                if (!in_array($key, ['created_at', 'updated_at','password'])) {
-                    $newFields[$key] = $value;
-                }
-            } else {
-                unset($oldData[$key]);
-            }
-        }
-
-        unset($oldData['created_at'], $oldData['updated_at'],$oldData['password']);
-        unset($newData['password']);
-
-        $changedFields['from'] = $oldData;
-        $changedFields['to'] = $newFields;
-
-        return $changedFields;
+        dispatch(new ActivityLogMonitoringJob($eventName, $model))->afterResponse();
     }
 
 }

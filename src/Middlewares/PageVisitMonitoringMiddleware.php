@@ -2,9 +2,9 @@
 
 namespace Awful\Monitoring\Middlewares;
 
+use Awful\Monitoring\Jobs\PageVisitMonitoringJob;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageVisitMonitoringMiddleware
@@ -16,22 +16,9 @@ class PageVisitMonitoringMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        // متابعة الطلب
         $response = $next($request);
 
-        // تسجيل بيانات الزيارة
-        DB::table('page_visit_monitoring')->insert([
-            'causer_id' => auth()->id(), // معرف المستخدم (إذا كان مسجلاً الدخول)
-            'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null,
-            'link' => $request->fullUrl(), // الرابط الكامل للطلب
-            'method' => $request->method(), // نوع الطلب (GET, POST, PUT ...)
-            'payload' => json_encode($request->except(['password', 'password_confirmation'])), // بيانات الطلب (باستثناء الحقول الحساسة)
-            'ip_address' => $request->ip(), // عنوان الـ IP
-            'user-agent' => json_encode($request->header('User-Agent')), // بيانات المتصفح
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        dispatch(new PageVisitMonitoringJob())->afterResponse();
 
         return $response;
     }
