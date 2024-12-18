@@ -11,5 +11,5 @@ class ActivityLogMonitoring extends Model
 
     public $timestamps = true;
 
-    protected $table = 'activity_log_monitoring';
+    protected $table = 'awful_activity_log_monitoring';
 }

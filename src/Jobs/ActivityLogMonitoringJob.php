@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ActivityLogMonitoringJob implements ShouldQueue
 {
@@ -32,10 +33,10 @@ class ActivityLogMonitoringJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $data = [
+        DB::table('awful_activity_log_monitoring')->insert([
             'domain' => request()->getHost(),
             'description' => $this->generateDescription($this->eventName, $this->model->getOriginal(), $this->model->getDirty()),
-            'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null,
+            'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null ,
             'causer_id' => auth()->id(),
             'subject_type' => get_class($this->model),
             'subject_id' => $this->model->getKey(),
@@ -43,12 +44,10 @@ class ActivityLogMonitoringJob implements ShouldQueue
             'link' => request()->fullUrl(),
             'method' => request()->method(),
             'ip_address' => request()->ip(),
-            'user-agent' => json_encode(request()->header('User-Agent')),
+            'user_agent' => json_encode(request()->header('User-Agent')),
             'created_at' => now(),
             'updated_at' => now(),
-        ];
-
-        $this->insertActivityLogData($data);
+        ]);
     }
 
 

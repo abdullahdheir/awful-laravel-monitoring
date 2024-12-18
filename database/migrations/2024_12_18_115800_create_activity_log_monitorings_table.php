@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_log_monitoring', function (Blueprint $table) {
+        Schema::create('awful_activity_log_monitoring', function (Blueprint $table) {
             $table->id();
             $table->string('domain')->nullable();
             $table->longText('description')->nullable();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('link')->nullable();
             $table->string('method')->nullable();
             $table->ipAddress();
-            $table->json('user-agent')->nullable();
+            $table->json('user_agent')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activity_log_monitoring');
+        Schema::dropIfExists('awful_activity_log_monitoring');
     }
 };

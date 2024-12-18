@@ -18,7 +18,6 @@
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
-        "ext-pdo": "*",
         "php": ">=8.0",
         "laravel/framework": "^9.0|^10.0|^11.0"
     },

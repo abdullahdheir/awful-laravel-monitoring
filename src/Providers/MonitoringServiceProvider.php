@@ -4,6 +4,7 @@ namespace Awful\Monitoring\Providers;
 
 use Awful\Monitoring\Middlewares\PageVisitMonitoringMiddleware;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
 class MonitoringServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,25 @@ class MonitoringServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->viewComposer();
+    }
+
+    /**
+     * View Composer.
+     *
+     * @return void
+     */
+    private function viewComposer(): void
+    {
+        view()->composer([
+            'AwfulMonitoring::layouts.master',
+            'AwfulMonitoring::visit-monitoring.index',
+            'AwfulMonitoring::actions-monitoring.index',
+            'AwfulMonitoring::authentications-monitoring.index',
+        ], function (View $view) {
+            $title = 'Awful Monitoring';
+
+            $view->with('title', $title);
+        });
     }
 }
