@@ -1,5 +1,5 @@
 {
-    "name": "awful/monitoring",
+    "name": "awful/laravel-monitoring",
     "description": "This package will be allow developers or managers to monitoring everything happen in them application",
     "type": "library",
     "license": "MIT",
