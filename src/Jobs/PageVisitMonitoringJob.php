@@ -3,9 +3,9 @@
 namespace Awful\Monitoring\Jobs;
 
 use Awful\Monitoring\Traits\DBTraits;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
@@ -25,9 +25,7 @@ class PageVisitMonitoringJob implements ShouldQueue
      */
     public function handle(): void
     {
-
-        // تسجيل بيانات الزيارة
-        $this->dbConnection()->table('page_visit_monitoring')->insert([
+        $data = [
             'domain' => request()->getHost(),
             'causer_id' => auth()->id(), // معرف المستخدم (إذا كان مسجلاً الدخول)
             'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null,
@@ -38,6 +36,8 @@ class PageVisitMonitoringJob implements ShouldQueue
             'user-agent' => json_encode(request()->header('User-Agent')), // بيانات المتصفح
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ];
+
+        $this->insertPageVisitData($data);
     }
 }

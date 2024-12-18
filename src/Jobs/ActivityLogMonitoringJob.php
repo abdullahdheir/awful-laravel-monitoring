@@ -3,10 +3,10 @@
 namespace Awful\Monitoring\Jobs;
 
 use Awful\Monitoring\Traits\DBTraits;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
@@ -32,7 +32,7 @@ class ActivityLogMonitoringJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->dbConnection()->table('activity_log_monitoring')->insert([
+        $data = [
             'domain' => request()->getHost(),
             'description' => $this->generateDescription($this->eventName, $this->model->getOriginal(), $this->model->getDirty()),
             'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null,
@@ -46,7 +46,9 @@ class ActivityLogMonitoringJob implements ShouldQueue
             'user-agent' => json_encode(request()->header('User-Agent')),
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ];
+
+        $this->insertActivityLogData($data);
     }
 
 
