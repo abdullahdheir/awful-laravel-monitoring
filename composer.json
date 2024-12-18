@@ -1,0 +1,20 @@
+{
+    "name": "awful/monitoring",
+    "description": "This package will be allow developers or managers to monitoring everything happen in them application",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Awful\\Monitoring\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Awful\\Monitoring\\Providers\\MonitoringServiceProvide"
+            ]
+        }
+    }
+}
