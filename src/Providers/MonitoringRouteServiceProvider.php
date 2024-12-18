@@ -16,7 +16,7 @@ class MonitoringRouteServiceProvider extends RouteServiceProvider
     {
         $path = __DIR__ . '/../../routes/web.php';
 
-        Route::middleware('web')
+        Route::middleware('web')->prefix('awful-monitoring')->name('awful_monitoring.')
             ->group($path);
     }
 }
