@@ -28,7 +28,7 @@ class PageVisitMonitoringJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if (Schema::hasTable('awful_activity_log_monitoring')) {
+        if (Schema::hasTable('awful_page_visit_monitoring')) {
             DB::table('awful_page_visit_monitoring')->insert([
                 'domain' => request()->getHost(),
                 'causer_id' => auth()->id(), // معرف المستخدم (إذا كان مسجلاً الدخول)
