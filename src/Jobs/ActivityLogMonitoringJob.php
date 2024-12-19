@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ActivityLogMonitoringJob implements ShouldQueue
 {
@@ -34,22 +35,25 @@ class ActivityLogMonitoringJob implements ShouldQueue
      */
     public function handle(): void
     {
-        DB::table('awful_activity_log_monitoring')->insert([
-            'domain' => request()->getHost(),
-            'description' => $this->generateDescription($this->eventName, $this->model->getOriginal(), $this->model->getDirty()),
-            'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null ,
-            'causer_id' => auth()->id(),
-            'subject_type' => get_class($this->model),
-            'subject_id' => $this->model->getKey(),
-            'event_name' => $this->eventName,
-            'link' => request()->fullUrl(),
-            'method' => request()->method(),
-            'ip_address' => request()->ip(),
-            'user_agent' => json_encode(request()->header('User-Agent')),
-            'properties' => json_encode(Common::getLogProperties(request()->ip())),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        if (Schema::hasTable('awful_activity_log_monitoring'))
+        {
+            DB::table('awful_activity_log_monitoring')->insert([
+                'domain' => request()->getHost(),
+                'description' => $this->generateDescription($this->eventName, $this->model->getOriginal(), $this->model->getDirty()),
+                'causer_type' => auth()->check() ? auth()->user()->getMorphClass() : null ,
+                'causer_id' => auth()->id(),
+                'subject_type' => get_class($this->model),
+                'subject_id' => $this->model->getKey(),
+                'event_name' => $this->eventName,
+                'link' => request()->fullUrl(),
+                'method' => request()->method(),
+                'ip_address' => request()->ip(),
+                'user_agent' => json_encode(request()->header('User-Agent')),
+                'properties' => json_encode(Common::getLogProperties(request()->ip())),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 
 
