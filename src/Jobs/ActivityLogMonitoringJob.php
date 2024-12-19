@@ -3,6 +3,7 @@
 namespace Awful\Monitoring\Jobs;
 
 use Awful\Monitoring\Traits\DBTraits;
+use Awful\Monitoring\Utils\Common;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +46,7 @@ class ActivityLogMonitoringJob implements ShouldQueue
             'method' => request()->method(),
             'ip_address' => request()->ip(),
             'user_agent' => json_encode(request()->header('User-Agent')),
+            'properties' => json_encode(Common::getLogProperties(request()->ip())),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

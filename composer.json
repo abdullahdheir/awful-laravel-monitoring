@@ -19,7 +19,8 @@
     "require": {
         "ext-json": "*",
         "php": ">=8.0",
-        "laravel/framework": "^9.0|^10.0|^11.0"
+        "laravel/framework": "^9.0|^10.0|^11.0",
+        "whichbrowser/parser": "^2.1"
     },
     "extra": {
         "laravel": {
@@ -27,5 +28,8 @@
                 "Awful\\Monitoring\\Providers\\MonitoringServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "ext-curl": "*"
     }
 }

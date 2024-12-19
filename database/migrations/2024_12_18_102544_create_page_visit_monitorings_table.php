@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('payload')->nullable();
             $table->ipAddress();
             $table->json('user_agent')->nullable();
+            $table->json('properties')->nullable();
             $table->timestamps();
         });
     }

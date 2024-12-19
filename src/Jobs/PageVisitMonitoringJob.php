@@ -3,6 +3,7 @@
 namespace Awful\Monitoring\Jobs;
 
 use Awful\Monitoring\Traits\DBTraits;
+use Awful\Monitoring\Utils\Common;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,6 +36,7 @@ class PageVisitMonitoringJob implements ShouldQueue
             'payload' => json_encode(request()->except(['password', 'password_confirmation'])), // بيانات الطلب (باستثناء الحقول الحساسة)
             'ip_address' => request()->ip(), // عنوان الـ IP
             'user_agent' => json_encode(request()->header('User-Agent')), // بيانات المتصفح
+            'properties' => json_encode(Common::getLogProperties(request()->ip())),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -14,7 +14,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 <p class="text-sm leading-none text-gray-600 ml-2">
-                                    {{ $authentication->user->{config('user-monitoring.user.display_attribute')} ?? 'Guest User' }}
+                                    {{ $authentication->causer?->name ?? 'Guest User' }}
                                 </p>
                             </div>
                         </td>
@@ -24,7 +24,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
                                 </svg>
                                 <p class="text-sm leading-none text-gray-600 ml-2">
-                                    {{ $authentication->action_type }}
+                                    {{ $authentication->event_name }}
                                 </p>
                             </div>
                         </td>
@@ -34,7 +34,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" />
                                 </svg>
                                 <p class="text-sm leading-none text-gray-600 ml-2">
-                                    {{ $authentication->ip }}
+                                    {{ $authentication->ip_address }}
                                 </p>
                             </div>
                         </td>
@@ -50,11 +50,11 @@
                         </td>
                         <td class="pl-5">
                             <button class="py-3 px-3 text-sm focus:outline-none leading-none text-blue-700 bg-blue-100 rounded">
-                                {{ $authentication->created_at->format('Y-m-d H:i') }}
+                                {{ $authentication->created_at->format('Y-m-d H:i A') }}
                             </button>
                         </td>
                         <td class="pl-4">
-                            <form method="post" action="{{ route('user-monitoring.authentications-monitoring-delete', $authentication->id) }}">
+                            <form method="post" action="{{ route('awful_monitoring.authentications_monitoring.delete', $authentication->id) }}">
                                 @csrf
                                 @method('DELETE')
 

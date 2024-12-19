@@ -36,20 +36,20 @@
                         </div>
                     </a>
                 @endif
-                @if(Route::has('awful_monitoring.actions_monitoring'))
+                @if(Route::has('awful_monitoring.activity_log_monitoring.index'))
                     <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                       href="{{ route('awful_monitoring.actions_monitoring') }}">
+                       href="{{ route('awful_monitoring.activity_log_monitoring.index') }}">
                         <div class="py-2 px-8 text-indigo-700 rounded-full hover:text-indigo-700 hover:bg-indigo-100
-                                {{ request()->routeIs('awful_monitoring.actions_monitoring') ? 'bg-indigo-100' : '' }}">
+                                {{ request()->routeIs('awful_monitoring.activity_log_monitoring.index') ? 'bg-indigo-100' : '' }}">
                             <p>Action Monitoring</p>
                         </div>
                     </a>
                 @endif
-                @if(Route::has('awful_monitoring.authentications-monitoring'))
+                @if(Route::has('awful_monitoring.authentications_monitoring.index'))
                     <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                       href="{{ route('awful_monitoring.authentications-monitoring') }}">
+                       href="{{ route('awful_monitoring.authentications_monitoring.index') }}">
                         <div class="py-2 px-8 text-indigo-700 rounded-full hover:text-indigo-700 hover:bg-indigo-100
-                                {{ request()->routeIs('awful_monitoring.authentications-monitoring') ? 'bg-indigo-100' : '' }}">
+                                {{ request()->routeIs('awful_monitoring.authentications_monitoring.index') ? 'bg-indigo-100' : '' }}">
                             <p>Authentication Monitoring</p>
                         </div>
                     </a>
