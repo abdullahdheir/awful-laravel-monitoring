@@ -2,10 +2,14 @@
 
 namespace Awful\Monitoring\Providers;
 
+use Awful\Monitoring\Jobs\ActivityLogMonitoringJob;
 use Awful\Monitoring\Observers\MonitoringObserver;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\File;
 
 class MonitoringEventServiceProvider extends EventServiceProvider
 {
@@ -36,5 +40,14 @@ class MonitoringEventServiceProvider extends EventServiceProvider
                 $class::observe(MonitoringObserver::class);
             }
         }
+
+        // Define the authentication events
+        Event::listen(function (Login $event) {
+            dispatch(new ActivityLogMonitoringJob("login", $event->user))->afterResponse();
+        });
+
+        Event::listen(function (Logout $event) {
+            dispatch(new ActivityLogMonitoringJob("logout", $event->user))->afterResponse();
+        });
     }
 }
